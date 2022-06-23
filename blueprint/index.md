@@ -264,7 +264,7 @@ The Find the Teams User ID data action uses the authenticated token supplied by 
    ![Import the Find Teams User ID Action](images/4BImportFindTeamsUserIdDataAction.png "Select the Create Teams meeting JSON file to import it")
 
 ### Import the Update Teams User Presence Action
-This data action creates and sends an SMS message that contains the Microsoft Teams video meeting URL to the customer. The Create Teams Video Meeting data action that you configured creates the URL.
+This data action calls the Microsoft Graph API to update the Teams user's presence.
 
 1. Download the *Update-Teams-User-Presence.custom.json* file from the [update-ms-teams-presence-from-inbound-interaction repo](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file in your local desktop to import it into Genesys Cloud.
 2. Navigate to **Integrations** > **Actions** and click **Import**.
