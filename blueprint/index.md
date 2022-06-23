@@ -48,6 +48,7 @@ To enable Microsoft Teams presence updates to be triggered from Genesys Cloud, y
 
 * A Genesys Cloud 3 license. For more information, see [Genesys Cloud Pricing](https://www.genesys.com/pricing "Opens the pricing article").
 * The Master Admin role in Genesys Cloud. For more information, see [Roles and permissions overview](https://help.mypurecloud.com/?p=24360 "Opens the Roles and permissions overview article") in the Genesys Cloud Resource Center.
+* Microsoft Azure Active Directory SCIM integration for Microsoft Teams must be implemented in your Genesys Cloud org.  For more information, see [Configure the Microsoft Teams integration](https://help.mypurecloud.com/articles/configure-the-microsoft-teams-integration/) in the Genesys Cloud Resource Center.
 * Event Orchestration must be activated for your Genesys Cloud org.
 
 ### Microsoft account
@@ -221,7 +222,7 @@ To enable a Genesys Cloud data action to make Public API requests on behalf of y
    ![OAuth client credentials](images/2COAuthClientCredentials.png "Copy the client ID and secret values of the OAuth client")
 
 ### Add a Genesys Cloud data actions integration
-The Microsoft Teams video session URL is sent as an SMS to the customer from Genesys Cloud. To enable this SMS capability, you must add a Genesys Cloud data actions integration.
+To update a user's presence in Microsoft Teams, we need to get the Teams userId that corresponds to the Genesys Cloud agent answer the voice interaction. To do this requires a Genesys Cloud API call.  To enable this GC Public API call, you must add a Genesys Cloud data actions integration.
 
 1. Install the **Genesys Cloud Data Actions** integration from Genesys Cloud. For more information, see [About the data actions integrations](https://help.mypurecloud.com/?p=209478 "Opens the Data Actions overview article").
 
@@ -235,44 +236,44 @@ The Microsoft Teams video session URL is sent as an SMS to the customer from Gen
 
    ![Add OAuth Credentials](images/3CAddOAuthCredentials.png "Configure credentials")
 
-4. Enter the OAuth **Client ID** and **Client Secret** that you noted in the [OAuth client creation](#create-an-oauth-client-for-use-with-the-genesys-cloud-data-action-integration "Goes to the Genesys Cloud data action section"). Click **OK** and save the data action.
+4. Enter the OAuth **Client ID** and **Client Secret** of your SCIM OAuth client used with your Active Directory Microsoft Teams SCIM integration listed in the Prerequisites>Genesys Cloud account section. Click **OK** and save the data action.
 
    ![Add OAuth client credentials](images/3DOAuthClientIDandSecret.png "Enter the OAuth client ID and secret")
 
-5. Navigate to the main Integrations page and set the SMS data action integration to **Active**.
+5. Navigate to the main Integrations page and set the Get MS Teams User ID data action integration to **Active**.
 
-   ![SMS data integrations set to active](images/3ESetToActive.png "Set the SMS data action integration to active status")
+   ![Get MS Teams User ID data integrations set to active](images/3ESetToActive.png "Set the Get MS Teams User ID data action integration to active status")
 
 ### Load the supporting data actions
 
-To enable the **Send SMS** button which sends the Microsoft Teams video session URL to the customer, you must import two more data actions.
-* [Import Create Teams video meeting data action](#import-find-teams-user-id-data-action "Goes to the Import Create Teams video meeting data action section")
-* [Send SMS data action](#import-update-teams-user-presence-data-action "Goes to the Send SMS data action section")
+To enable both the Gensys Cloud Public API call to get the Teams userId and the Microsoft Graph API call to update that Teams user's presence, you must import two more data actions.
+* [Import the Find Teams User ID Action](#import-find-the-teams-user-id-action "Goes to the Import the Find Teams User ID Action section")
+* [Import the Update Teams User Presence Action](#import-the-update-teams-user-presence-action "Goes to the Import the Update Teams User Presence Action section")
 
 ### Import the Find Teams User ID Action
-The Create Teams Video Meeting data action uses the authenticated token supplied by other data actions to request a new Microsoft Teams video meeting URL.
+The Find the Teams User ID data action uses the authenticated token supplied by other data actions to get the Teams User ID from the Genesys Cloud Public API.
 
-1. Download the *Create-Teams-Meeting.custom.json* file from the [microsoft-teams-blueprint repo](https://github.com/MyPureCloud/microsoft-teams-blueprint "Opens the GitHub repo") GitHub repository. Save this file in your local desktop to import it into Genesys Cloud.
+1. Download the *Find-Teams-User-Id.custom.json* file from the [update-ms-teams-presence-from-inbound-interaction repo](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file in your local desktop to import it into Genesys Cloud.
 
 2. Navigate to **Integrations** > **Actions** and click **Import**.
 
    ![Import the data action](images/4AImportDataActions.png "Import the data action")
 
-3. Select the *Create-Teams-Meeting.custom.json* file and associate with the web services data action you created in the [Add a web services data actions integration](#add-a-web-services-data-actions-integration "Goes to the Add a web services data actions integration section") section and click **Import Action**.
+3. Select the *Find-Teams-User-Id.custom.json* file and associate with the web services data action you created in the [Add a web services data actions integration](#add-a-web-services-data-actions-integration "Goes to the Add a web services data actions integration section") section and click **Import Action**.
 
-   ![Import the Create Teams video meeting data action](images/4BImportCreateTeamsVideoMeetingDataAction.png "Select the Create Teams meeting JSON file to import it")
+   ![Import the Find Teams User ID Action](images/4BImportFindTeamsUserIdDataAction.png "Select the Create Teams meeting JSON file to import it")
 
 ### Import the Update Teams User Presence Action
 This data action creates and sends an SMS message that contains the Microsoft Teams video meeting URL to the customer. The Create Teams Video Meeting data action that you configured creates the URL.
 
-1. Download the *Send-SMS.custom.json* file from the [microsoft-teams-blueprint repo](https://github.com/MyPureCloud/microsoft-teams-blueprint "Opens the GitHub repo") GitHub repository. Save this file in your local desktop to import it into Genesys Cloud.
+1. Download the *Update-Teams-User-Presence.custom.json* file from the [update-ms-teams-presence-from-inbound-interaction repo](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file in your local desktop to import it into Genesys Cloud.
 2. Navigate to **Integrations** > **Actions** and click **Import**.
 
    ![Import the data action](images/4AImportDataActions.png "Import the data action")
 
-3. Select the *Send-SMS.custom.json* file and associate with the web services data action you created in the [Add a web services data actions integration](#add-a-web-services-data-actions-integration "Goes to the Add a web services data actions integration section") section and click **Import Action**.
+3. Select the *Update-Teams-User-Presence.custom.json* file and associate with the web services data action you created in the [Add a web services data actions integration](#add-a-web-services-data-actions-integration "Goes to the Add a web services data actions integration section") section and click **Import Action**.
 
-   ![Import the Send the SMS data action](images/5BImportSendSMSDataAction.png "Import the SMS data action")
+   ![Import the Update Teams User Presence data action](images/5BImportUpdateTeamsUserPresenceDataAction.png "Import the SMS data action")
 
 ### Import the Architect Workflows
 You need to import the script *Send-SMS-with-Teams-Video-URL.script* that references the created data actions. The script generates the **Escalate to Teams** button for agents during an active interaction with the customer. It also sends an SMS that contains the Microsoft Teams video URL to the customer.

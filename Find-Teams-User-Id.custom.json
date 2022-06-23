@@ -1,5 +1,5 @@
 {
-  "name": "Find Teams User Id - Exported 2022-06-22 @ 12:48",
+  "name": "Find Teams User Id",
   "integrationType": "purecloud-data-actions",
   "actionType": "custom",
   "config": {
