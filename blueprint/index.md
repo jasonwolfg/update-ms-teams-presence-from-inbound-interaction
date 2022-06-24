@@ -16,7 +16,7 @@ The following illustration shows the presence solution from an agent’s point o
 
 The following shows the end to end agent experience this blueprint enables.
 
-![Overview](images/TeamsVideoSMSBlueprint.gif "Overview")
+![Overview](images/MSTeamsGCPresenceSyncBlueprint.gif "Overview")
 
 To enable Microsoft Teams presence updates to be triggered from Genesys Cloud, you use several public APIs that are available from Genesys Cloud and Microsoft Graph. The following illustration shows the API calls between Genesys Cloud and Microsoft 365.
 
