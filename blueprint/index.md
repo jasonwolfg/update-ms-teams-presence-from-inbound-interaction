@@ -276,122 +276,53 @@ This data action calls the Microsoft Graph API to update the Teams user's presen
    ![Import the Update Teams User Presence data action](images/5BImportUpdateTeamsUserPresenceDataAction.png "Import the SMS data action")
 
 ### Import the Architect Workflows
-You need to import the script *Send-SMS-with-Teams-Video-URL.script* that references the created data actions. The script generates the **Escalate to Teams** button for agents during an active interaction with the customer. It also sends an SMS that contains the Microsoft Teams video URL to the customer.
+You need to import the *GC User Set MS Teams to DoNotDisturb_v8-0.i3WorkFlow* and *GC User Set MS Teams to Available_v4-0.i3WorkFlow* architect workflows that references the created data actions. These workflows will be called by the Event Orchestration triggers created in the next step.  When triggered, these workflows will call the Find Teams User ID data action, set the MS Teams User Id variable then update the MS Teams user's presence via the Graph API.  One workflow is triggered with an agent joins an inbound acd voice interaction and sets the MS Teams presence to DoNotDisturb.  The other workflow is triggered when the inbound acd interaction ends and sets the MS Teams presence to Available.  
 
-1. Download the *Send-SMS-with-Teams-Video-URL.script* file from the [microsoft-teams-blueprint repo](https://github.com/MyPureCloud/microsoft-teams-blueprint "Opens the GitHub repo") GitHub repository. Save this file to your local desktop to import it into Genesys Cloud.  
+1. Download the *GC User Set MS Teams to DoNotDisturb_v8-0.i3WorkFlow* file from the [update-ms-teams-presence-from-inbound-interaction](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file to your local desktop to import it into Genesys Cloud.  
 
-2. Navigate to **Admin** > **Contact Center** > **Scripts** and click **Import**.
+2. Navigate to **Admin** > **Architect** > **Flows:Workflow** and click **Add**.
 
-   ![Import the script](images/6AImportScript.png "Import the script")
+   ![Import the script](images/AddWorkflow1.png "Add Workflow")
 
-3. Select the downloaded *Send-SMS-with-Teams-Video-URL.script* file.
+3. Name your workflow and click **Create**.
 
-   ![Import the send SMS script](images/6BImportSendSMSScript.png "Import the SMS script")
+  ![Name your workflow](images/NameWorkflow1.png "Name your Workflow")
 
-4. To configure the script for use in an outbound message, open the imported script.
+4. Expand the **Save** menu and click **Import**.
 
-   ![Open the Script menu](images/6COpenScriptDropdown.png "Open the Script menu")
+   ![Import Your Workflow](images/ImportWorkflow1.png "Import Your Workflow")
 
-5. Click the **Actions** icon and then click **Escalate to Teams**
+5. Select the downloaded *GC User Set MS Teams to DoNotDisturb_v8-0.i3WorkFlow* file.  Click **Import**.
 
-  ![Click Script Actions](images/clickScriptActions.png "Click Script Actions")
+   ![Import your Workflow File](images/SelectWorkflow1ImportFile.png "Import your Workflow File")
 
-6. Expand the First Data Action
+6. Review your workflow.  Copy the workflow ID from the URL and save it for the Event Orchestration Trigger creation.  Click **Save** then click **Publish**.
 
-   ![Expand the First Data Action](images/expandFirstDataAction.png "Expand the First Data Action")
+   ![Save your Workflow](images/ImportedWorkflow1.png "Save Your Workflow")
 
-7. From the **Category** drop menu, select the category of your "Create Teams Meeting" data action.  From the **Data Action** drop menu, select your "Create Teams Meeting" data action.
+7. Download the *GC User Set MS Teams to Available_v4-0.i3WorkFlow* file from the [update-ms-teams-presence-from-inbound-interaction](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file to your local desktop to import it into Genesys Cloud.  
 
-  ![Expand the First Data Action](images/mapFirstDataAction.png "Expand the First Data Action")
+8. Navigate to **Admin** > **Architect** > **Flows:Workflow** and click **Add**.
 
-8. Expand the input variables for the First Data Action
+  ![Import the script](images/AddWorkflow1.png "Add Workflow")
 
-  ![Expand Input Variables](images/mapFirstDataActionExpandInputVariables.png "Expand Input Variables")
+9. Name your workflow and click **Create**.
 
-9. Type the desired value in the **user** input variable.
+ ![Name your workflow](images/NameWorkflow2.png "Name your Workflow")
 
-  :::primary
-  **Note:** The variable value in the example below will create a Teams meeting through the agent's Teams account.  For this to work, the agent's Genesys Cloud email address must match their Teams email address.  If you'd like to use the same Teams account to create the Teams meeting regardless of which agent is on the interaction, you can define a static value here.  It can be either the email address or object ID of a person in the Azure Activity Directory where your app is registered.
-  :::
+10. Expand the **Save** menu and click **Import**.
 
-  ![Map First Data Action Input Variable](images/mapFirstDataActionDefineUserInputVariable.png "Map First Data Action Input Variable")
+  ![Import Your Workflow](images/ImportWorkflow2.png "Import Your Workflow")
 
-10. Define static values for the remaining input variables.
+11. Select the downloaded *GC User Set MS Teams to Available_v4-0.i3WorkFlowI’m * file.  Click **Import**.
 
-  :::primary
-  **Note:** Using the values in this example will create ISO-8601 formatted timestamps.  The startTime and endTime parameters can be the same and it can occur in the past.  If you would like to define your own static timestamps for these variables, you are welcome to do so.
-  :::
+  ![Import your Workflow File](images/SelectWorkflow2ImportFile.png "Import your Workflow File")
 
-  ![Define Static Input Variables](images/mapFirstDataActionDefineInputVariables.png "Define Static Input Variables")
+12. Review your workflow.  Copy the workflow ID from the URL and save it for the Event Orchestration Trigger creation.  Click **Save** then click **Publish**.
 
-11. Expand the second data action.
-
-   ![Expand the second data action.](images/expandSecondDataAction.png "Expand the second data action.")
-
-12. From the **Category** drop menu, select the category of your "Send SMS" data action.  From the **Data Action** drop menu, select your "Send SMS" data action.
-
- ![Map Second Data Action](images/mapSecondDataAction.png "Map Second Data Action")
-
-13. Expand the input variables for the Second Data Action
-
-14. Type one of your purchased SMS Numbers from your Genesys Cloud organization in the **fromAddress** input variable.
-
- :::primary
- **Note:** See additional resource below for detailed steps for purchasing an SMS number.  Phone must be typed in +11234567890 format.
- :::
-
- ![Define From Address Input Variable](images/mapSecondDataActionFromAddressVariable.png "Define From Address Input Variable")
-
-15. Confirm the remaining input variables of the second data action match the example below.
-
- ![Map Second Data Action Input Variables](images/mapSecondDataActionVariables.png "Map Second Data Action Input Variables")
-
-16. Below the Custom Action Name, click **Save**.
-
-  ![Save Custom Action](images/saveScriptCustomAction.png "Save Custom Action")
-
-17. In the Script menu, click **Save**.
-
-   ![Save the script](images/saveScript.png "Save the script")
-
-18. In the Script menu, click **Publish**.
-
-   ![Publish the script](images/6DPublishScript.png "Publish the script")
-
-19. Navigate to **Admin** > **Contact Center** > **Queues** and select the queue you'd like to associate with this script.
-
-20. Click the **Voice** tab, select the "Send-SMS-with-Teams-Video-URL" script from the **Default Script** field.
-
-    ![Select Default Script](images/selectDefaultScriptForQueue.png "Select the Default Script")
+  ![Save your Workflow](images/ImportedWorkflow2.png "Save Your Workflow")
 
 ## Create the Event Orchestration Triggers
-You can test the Create Teams video meeting URL data action within the data action.
-
-1. Navigate to **Admin** > **Integrations** > **Actions** and select the Create Teams Video Meeting data action.
-
-
-2. Navigate to **Setup** > **Test**, enter your user, startTime, endTime and timeZone, and then click **Run Action**.
-
-    :::primary
-    **Note:** The startTime and endTime parameters must be in ISO-8601 format. The user parameter can be the Teams user's ActiveDirect Object ID or the Teams user's email address.
-    :::
-
-   ![Test the Create Teams video meeting data action](images/7TestCreateTeamsVideoMeetingURLDataAction.png "Test the deployment")
-
-You can test the Send SMS data action within the data action.
-
-1. Navigate to **Admin** > **Integrations** > **Actions** and select the Send SMS data action.
-
-
-2. Navigate to **Setup** > **Test**, enter your user, startTime, endTime and timeZone, and then click **Run Action**.
-
-   :::primary
-   **Note:** The fromAddress parameter must be one of the purchased SMS Numbers within your Genesys Cloud organization.  See additional resource below for detailed steps for purchasing an SMS number.  The toAddressMessengerType must be "sms".
-   :::
-
-  ![Test the Send SMS data action](images/testSendSMSDataAction.png "Test the Send SMS deployment")
-
-## Test the deployment
 You can test the Create Teams video meeting URL data action within the data action.
 
 1. Navigate to **Admin** > **Integrations** > **Actions** and select the Create Teams Video Meeting data action.
@@ -421,8 +352,5 @@ You can test the Send SMS data action within the data action.
 
 ## Additional resources
 
-- [Create onlineMeeting](https://docs.microsoft.com/en-us/graph/api/application-post-onlinemeetings?view=graph-rest-1.0&tabs=javascript "Opens the Microsoft graph documentation") in the Microsoft Graph API Reference
-- [Purchase SMS long code numbers](https://help.mypurecloud.com/articles/purchase-sms-long-code-numbers/) in Genesys Cloud Help
-- [About Scripting](https://help.mypurecloud.com/?p=54284 "Opens the Scripting overview article") in the Genesys Cloud Resource Center
-- [Agentless SMS Notifications](https://developer.mypurecloud.com/api/tutorials/agentless-sms-notifications/index.html?language=java&step=1 "Opens the SMS tutorial") in the Genesys Cloud Developer Center
-- [Auto Send SMS](https://developer.mypurecloud.com/api/tutorials/sms-sending/index.html?language=nodejs&step=1 "Opens the SMS Sending tutorial") in the Genesys Cloud Developer Center
+- [Update MS Teams Presence](https://docs.microsoft.com/en-us/graph/api/presence-setuserpreferredpresence?view=graph-rest-beta&tabs=http "Opens the Microsoft graph documentation") in the Microsoft Graph API Reference
+- [Supported Genesys Cloud Notification Triggers](https://developer.genesys.cloud/notificationsalerts/notifications/available-topics "Opens the Genesys Cloud API Explorer") in the Genesys Cloud Developer Center
