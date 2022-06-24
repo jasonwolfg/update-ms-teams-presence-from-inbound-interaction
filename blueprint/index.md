@@ -64,11 +64,10 @@ To enable Microsoft Teams presence updates to be triggered from Genesys Cloud, y
 * [Create an OAuth client for use with the Genesys Cloud data action integration](#create-an-oauth-client-for-use-with-the-genesys-cloud-data-action-integration "Goes to the Create an OAuth client for use with the Genesys Cloud data action integration section")
 * [Add a Genesys Cloud data actions integration](#add-a-genesys-cloud-data-actions-integration "Goes to the Add a Genesys Cloud data actions integration section")
 * [Load the supporting data actions](#load-the-supporting-data-actions "Goes to the Load the supporting data actions section")
-* [Import the Find Teams User ID Action](#import-find-the-teams-user-id-action "Goes to the Import the Find Teams User ID Action section")
+* [Import the Find Teams User ID Action](#import-the-find-teams-user-id-action "Goes to the Import the Find Teams User ID Action section")
 * [Import the Update Teams User Presence Action](#import-the-update-teams-user-presence-action "Goes to the Import the Update Teams User Presence Action section")
 * [Import the Architect Workflows](#import-the-architect-workflows "Goes to the Import the Architect Workflows section")
 * [Create the Event Orchestration Triggers](#create-the-event-orchestration-triggers "Create the Event Orchestration Triggers")
-* [Test the deployment](#test-the-deployment "Goes to the Test the deployment section")
 * [Additional resources](#additional-resources "Goes to the Additional resources section")
 
 ### Configure the Microsoft Azure custom app
@@ -247,7 +246,7 @@ To update a user's presence in Microsoft Teams, we need to get the Teams userId 
 ### Load the supporting data actions
 
 To enable both the Gensys Cloud Public API call to get the Teams userId and the Microsoft Graph API call to update that Teams user's presence, you must import two more data actions.
-* [Import the Find Teams User ID Action](#import-find-the-teams-user-id-action "Goes to the Import the Find Teams User ID Action section")
+* [Import the Find Teams User ID Action](#import-the-find-teams-user-id-action "Goes to the Import the Find Teams User ID Action section")
 * [Import the Update Teams User Presence Action](#import-the-update-teams-user-presence-action "Goes to the Import the Update Teams User Presence Action section")
 
 ### Import the Find Teams User ID Action
