@@ -323,31 +323,46 @@ You need to import the *GC User Set MS Teams to DoNotDisturb_v8-0.i3WorkFlow* an
   ![Save your Workflow](images/ImportedWorkflow2.png "Save Your Workflow")
 
 ## Create the Event Orchestration Triggers
-You can test the Create Teams video meeting URL data action within the data action.
+With the workflows created, the last step is to create the triggers to call the workflows.  For this, you will need Event Orchestration activated in your Genesys Cloud organization and you will need Postman running on your machine to make the necessary API calls to create the necessary Event Orchestration triggers.
 
-1. Navigate to **Admin** > **Integrations** > **Actions** and select the Create Teams Video Meeting data action.
+1. Download the *Genesys Cloud Event Orchestration Trigger API's.postman_collection.json* file from the [update-ms-teams-presence-from-inbound-interaction](https://github.com/jasonwolfg/update-ms-teams-presence-from-inbound-interaction "Opens the GitHub repo") GitHub repository. Save this file to your local desktop to import it into Genesys Cloud.
 
+2. Navigate to Postman and **Import**
 
-2. Navigate to **Setup** > **Test**, enter your user, startTime, endTime and timeZone, and then click **Run Action**.
+   ![Import Event Orchestration API Collection](images/ImportPostmanCollection.png "Import Event Orchestration API Collection")
 
-    :::primary
-    **Note:** The startTime and endTime parameters must be in ISO-8601 format. The user parameter can be the Teams user's ActiveDirect Object ID or the Teams user's email address.
-    :::
+3. Locate the *Genesys Cloud Event Orchestration Trigger API's.postman_collection.json* and click **Import**
 
-   ![Test the Create Teams video meeting data action](images/7TestCreateTeamsVideoMeetingURLDataAction.png "Test the deployment")
-
-You can test the Send SMS data action within the data action.
-
-1. Navigate to **Admin** > **Integrations** > **Actions** and select the Send SMS data action.
+   ![Import Event Orchestration API Collection File](images/ImportPostmanCollectionFile.png "Import Event Orchestration API Collection File")
 
 
-2. Navigate to **Setup** > **Test**, enter your user, startTime, endTime and timeZone, and then click **Run Action**.
+4. Expand the **Genesys Cloud Event Orchestration API's** folder and select **Genesys Cloud Client Credential Token Creation**.  Be sure to change your API domain to match the AWS region your Genesys Cloud organization is hosted.  The GC org in this screenshot is hosted in us-east-1.  On the **Authorization** tab, paste the **Client ID** from your OAuth client created in [Create an OAuth client for use with the Genesys Cloud data action integration](#create-an-oauth-client-for-use-with-the-genesys-cloud-data-action-integration "Goes to the Create an OAuth client for use with the Genesys Cloud data action integration section") in the **Username** field in Postman.  Paste the **Client Secret** from the same OAuth client into the **Password** field in Postman.  Click **Send**.
 
    :::primary
-   **Note:** The fromAddress parameter must be one of the purchased SMS Numbers within your Genesys Cloud organization.  See additional resource below for detailed steps for purchasing an SMS number.  The toAddressMessengerType must be "sms".
+   **Note:** For a list of the API prefixes for the Genesys Cloud Public API, [click-here](https://developer.genesys.cloud/platform/api/ "Open Genesys Cloud Developer Center")
    :::
 
-  ![Test the Send SMS data action](images/testSendSMSDataAction.png "Test the Send SMS deployment")
+  ![Create Access Token](images/CreateBearerToken.png "Create Access Token")
+
+5. Copy the **access token** from the body of the response.
+
+     ![Copy Access Token](images/CopyBearerToken.png "Copy Access Token")
+
+6. Open **ProcessAutomation Trigger Creation**.  On the **Authenication** tab, select **Bearer Token** and paste the access token from the previous step.
+
+     ![Paste Access Token](images/PasteBearerToken.png "Paste Access Token")
+
+7. Click the **Body** tab, Be sure to change your API domain to match the AWS region your Genesys Cloud organization is hosted.  Replace **my-workflow-id** with the id of the **GC User Set MS Teams to DoNotDisturb** Architect workflow you created earlier in this blueprint.  Click **Send**.
+
+   :::primary
+   **Note:** For a list of the API prefixes for the Genesys Cloud Public API, [click-here](https://developer.genesys.cloud/platform/api/ "Open Genesys Cloud Developer Center")
+   :::
+
+    ![Create the Conversation Start Trigger](images/CreateTrigger1.png "Create the Conversation Start Trigger")
+
+8. The first trigger has been created.  To create the second one, change the **topicName** to **v2.detail.events.conversation.{id}.user.end**.  Replace **my-workflow-id** with the id of the **GC User Set MS Teams to Available** Architect workflow you created earlier in this blueprint.  Click **Send**.
+
+    ![Create the Conversation Start Trigger](images/CreateTrigger2.png "Create the Conversation Start Trigger")
 
 
 ## Additional resources
